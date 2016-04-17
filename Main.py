@@ -3,7 +3,7 @@ import praw
 import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
 import json
-
+import getpass
 
 # I am so sorry JB, but Total War means TOTAL WAR
 
@@ -82,11 +82,20 @@ def createDocument(amount):
     return bills
 
 
-def reddit():
-    r.login("","")
+def sendToMHOL(user,password):
+    login()
     bills = createDocument(10)
     for x in range(len(bills)):
         title = bills[x].split("\n")[0]
         print(title)
         r.send_message("/r/mhollegislation",title,bills[x])
 
+
+def login():
+    #Collects login information for the user's reddit account
+    user = str(input('Reddit Username:'))
+    try:
+        r.login(user,getpass.getpass('Reddit Password:'))
+    except praw.errors.InvalidUserPass:
+        print ("Incorrect Password")
+        login()
