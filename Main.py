@@ -12,7 +12,11 @@ json_key = json.load(open(docKey))
 docName = "English Bill Data Base"
 sheetName = "Sheet1"
 scope = ['https://spreadsheets.google.com/feeds']
-r = praw.Reddit('Lord Killer v1')
+r = praw.Reddit(client_id=str(json_key['reddit_client_id']),
+                     client_secret=json_key["reddit_client_secret"],
+                     password=json_key["reddit_password"],
+                     user_agent='Robot to fuck with MHOL',
+                     username=json_key["reddit_username"])
 credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'].encode(), scope)
 gc = gspread.authorize(credentials)
 sh = gc.open(docName)
@@ -82,13 +86,13 @@ def createDocument(amount):
     return bills
 
 
-def sendToMHOL(user,password):
-    login()
-    bills = createDocument(10)
+def sendToMHOL():
+    print("ready")
+    bills = createDocument(1)
     for x in range(len(bills)):
         title = bills[x].split("\n")[0]
         print(title)
-        r.send_message("/r/mhollegislation",title,bills[x])
+        r.redditor("agentnola").message(title,bills[x])
 
 
 def login():
@@ -99,3 +103,4 @@ def login():
     except praw.errors.InvalidUserPass:
         print ("Incorrect Password")
         login()
+sendToMHOL()
