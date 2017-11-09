@@ -95,15 +95,6 @@ def sendToMHOL():
         print(title)
         r.redditor("agentnola").message(title,bills[x])
 
-
-def login():
-    #Collects login information for the user's reddit account
-    user = str(input('Reddit Username:'))
-    try:
-        r.login(user,getpass.getpass('Reddit Password:'))
-    except praw.errors.InvalidUserPass:
-        print ("Incorrect Password")
-        login()
 def getCurrentYear():
     return str(date.today().year)
 sendToMHOL()
