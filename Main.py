@@ -4,6 +4,7 @@ import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
 import json
 import getpass
+from datetime import date
 
 # I am so sorry JB, but Total War means TOTAL WAR
 
@@ -58,7 +59,7 @@ def createDocument(amount):
     bills = []
     for x in range(len(billNames)):
         billname = billNames[x]
-        doc = "     **"+billname+"""Repeal Bill 2016.**
+        doc = "     **"+billname+"""Repeal Bill """+getCurrentYear()+""".**
 
     An act to repeal the """+billname+ """
 
@@ -71,7 +72,7 @@ def createDocument(amount):
 
     (2) Commencement, Short Title & Extent
 
-    (a) This Act may be cited as the"""+billname+ """  Repeal Act 2016
+    (a) This Act may be cited as the"""+billname+ """  Repeal Act """+getCurrentYear()+"""
 
     (b) This bill shall come into effect immediately upon receiving Royal Assent.
 
@@ -103,4 +104,6 @@ def login():
     except praw.errors.InvalidUserPass:
         print ("Incorrect Password")
         login()
+def getCurrentYear():
+    return str(date.today().year)
 sendToMHOL()
